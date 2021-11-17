@@ -6,12 +6,14 @@ At the moment, this script works specifically for the CAGE track files as it tak
 
 ### To run the script:
 
- **python main.py <dir_path>** where dir_apth is the path of the directory containing the list of BED files.
+ **python main.py <dir_path>** 
+ 
+where _dir_path_ is the path of the directory containing the list of BED files.
 
 The original BED files submitted to us (_novel_CAGE_ and _annot_CAGE_) do not abide to the UCSC rules for BED format and
 therefore several changes were made to the files before they could be converted to BigBed.
 
-The the conversion script is run on the directory path, 2 sub-directories are created in the _dir_path._
+After the conversion script is run on the directory path, 2 sub-directories are created in the _dir_path._
 
 Those 2 sub-directpries are namely: **_updated_** and **_bigbed_**
 
