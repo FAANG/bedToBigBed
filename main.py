@@ -2,8 +2,9 @@ import sys
 import subprocess
 import os
 from module.checks import check_headers, modify_file, sort_file
-from module.logging import log_error
+from module.logging import logger
 
+main_logger = logger(__name__)
 
 def check_arg():
     if len(sys.argv) < 2:
@@ -28,7 +29,7 @@ def create_dir(dir_path):
         return updated_dir_path, bigbed_dir_path
 
     except OSError as error:
-        log_error(f"Error creating subdirectory {updated_dir_path} \n {error}")
+        main_logger.error(f"Error creating subdirectory {updated_dir_path} \n {error}")
 
 
 def run_process(dir_path):
@@ -40,7 +41,7 @@ def run_process(dir_path):
                 bed_to_bigbed(filepath, updated_dir_path, bigbed_dir_path)
 
     except RuntimeError as error:
-        log_error(f"Error with bigBed conversion {error}")
+        main_logger.error(f"Error with bigBed conversion {error}")
 
 
 def bed_to_bigbed(filepath, updated_dir_path, bigbed_dir_path):
@@ -87,10 +88,10 @@ def bed_to_bigbed(filepath, updated_dir_path, bigbed_dir_path):
                         out_err.close()
 
         else:
-            log_error(f"Incorrect headers in file {filename}")
+            main_logger.error(f"Incorrect headers in file {filename}")
 
     except RuntimeError as error:
-        log_error(f"Error with bigBed conversion {error}")
+        main_logger.error(f"Error with bigBed conversion {error}")
 
 
 if __name__ == '__main__':

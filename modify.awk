@@ -2,7 +2,7 @@ func round(n){
     n = n + 0.5
     n = int(n)
     if (n > 1000){
-        print "Score over 1000 in file: "basename(FILENAME) "with value " n > "logs/err.txt"
+        print "Score over 1000 in file: "basename(FILENAME) "with value " n > "logs/awk.log"
         n = substr(n,1,3)
     }
     return int(n)
