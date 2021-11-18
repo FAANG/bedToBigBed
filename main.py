@@ -3,6 +3,7 @@ import subprocess
 import os
 from module.checks import check_headers, modify_file, sort_file
 from module.logging import logger
+from configs.config import *
 
 main_logger = logger(__name__)
 
@@ -66,8 +67,8 @@ def bed_to_bigbed(filepath, updated_dir_path, bigbed_dir_path):
                 else:
                     # convert bed to bigbed
                     print(f"Proceeding with file conversion from bed to bigbed - {filename}.")
-                    cmd = f"./bedToBigBed -as=files/autosql/cage.as -type=bed6+1 {modified_filepath} " \
-                          f"files/chrom_sizes/GCF_002742125.1_Oar_rambouillet_v1.0.chrom.sizes {bigbed_filepath}"
+                    cmd = f"./bedToBigBed -as={AUTOSQL_FILE} -type=bed6+1 {modified_filepath} " \
+                          f"{CHROMSIZES} {bigbed_filepath}"
 
                     conversion = subprocess.run(
                         cmd, capture_output=True, text=True, shell=True)
