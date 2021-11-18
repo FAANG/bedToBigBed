@@ -8,7 +8,7 @@ main_logger = logger(__name__)
 
 def check_arg():
     if len(sys.argv) < 2:
-        print('Please provide a directory path containing BED files')
+        print('Please provide a directory path containing BED files.')
         exit(0)
     return sys.argv[1]
 
