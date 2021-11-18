@@ -57,18 +57,12 @@ def bed_to_bigbed(filepath, updated_dir_path, bigbed_dir_path):
             modify_res = modify_file(filepath, modified_filepath)
 
             if modify_res.returncode != 0:
-                out_err = open("logs/err.txt", "a")
-                out_err.write(f"Error modifying file {filepath}")
-                out_err.write("\n")
-                out_err.close()
+                main_logger.error(f"Error modifying file {filepath}")
             else:
                 sort_res = sort_file(modified_filepath)
 
                 if sort_res.returncode != 0:
-                    out_err = open("logs/err.txt", "a")
-                    out_err.write(f"Error sorting file {filepath}")
-                    out_err.write("\n")
-                    out_err.close()
+                    main_logger.error(f"Error sorting file {filepath}")
                 else:
                     # convert bed to bigbed
                     print(f"Proceeding with file conversion from bed to bigbed - {filename}.")
@@ -81,11 +75,7 @@ def bed_to_bigbed(filepath, updated_dir_path, bigbed_dir_path):
                     if conversion.returncode == 0:
                         print(f"File conversion from bed to bigbed has been successful - {filename}")
                     else:
-                        print(conversion.stdout + conversion.stderr)
-                        out_err = open("logs/err.txt", "a")
-                        out_err.write(f"Error converting file {modified_filepath} to bigBed format")
-                        out_err.write("\n")
-                        out_err.close()
+                        main_logger.error(f"Error converting file {modified_filepath} to bigBed format")
 
         else:
             main_logger.error(f"Incorrect headers in file {filename}")
