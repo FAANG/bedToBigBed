@@ -3,12 +3,13 @@ import subprocess
 import os
 from module.checks import check_headers, modify_file, sort_file
 from module.logging import logger
+from configs.config import *
 
 main_logger = logger(__name__)
 
 def check_arg():
     if len(sys.argv) < 2:
-        print('Please provide a directory path containing BED files.')
+        print('Please provide a directory path containing BED files')
         exit(0)
     return sys.argv[1]
 
@@ -57,23 +58,17 @@ def bed_to_bigbed(filepath, updated_dir_path, bigbed_dir_path):
             modify_res = modify_file(filepath, modified_filepath)
 
             if modify_res.returncode != 0:
-                out_err = open("logs/err.txt", "a")
-                out_err.write(f"Error modifying file {filepath}")
-                out_err.write("\n")
-                out_err.close()
+                main_logger.error(f"Error modifying file {filepath}")
             else:
                 sort_res = sort_file(modified_filepath)
 
                 if sort_res.returncode != 0:
-                    out_err = open("logs/err.txt", "a")
-                    out_err.write(f"Error sorting file {filepath}")
-                    out_err.write("\n")
-                    out_err.close()
+                    main_logger.error(f"Error sorting file {filepath}")
                 else:
                     # convert bed to bigbed
                     print(f"Proceeding with file conversion from bed to bigbed - {filename}.")
-                    cmd = f"./bedToBigBed -as=files/autosql/cage.as -type=bed6+1 {modified_filepath} " \
-                          f"files/chrom_sizes/GCF_002742125.1_Oar_rambouillet_v1.0.chrom.sizes {bigbed_filepath}"
+                    cmd = f"./bedToBigBed -as={AUTOSQL_FILE} -type=bed6+1 {modified_filepath} " \
+                          f"{CHROMSIZES} {bigbed_filepath}"
 
                     conversion = subprocess.run(
                         cmd, capture_output=True, text=True, shell=True)
@@ -81,11 +76,7 @@ def bed_to_bigbed(filepath, updated_dir_path, bigbed_dir_path):
                     if conversion.returncode == 0:
                         print(f"File conversion from bed to bigbed has been successful - {filename}")
                     else:
-                        print(conversion.stdout + conversion.stderr)
-                        out_err = open("logs/err.txt", "a")
-                        out_err.write(f"Error converting file {modified_filepath} to bigBed format")
-                        out_err.write("\n")
-                        out_err.close()
+                        main_logger.error(f"Error converting file {modified_filepath} to bigBed format")
 
         else:
             main_logger.error(f"Incorrect headers in file {filename}")
